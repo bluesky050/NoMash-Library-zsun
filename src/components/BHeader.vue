@@ -1,52 +1,50 @@
 <template>
-  <!-- Using Bootstrap's Header template (starter code) -->
-  <!-- https://getbootstrap.com/docs/5.0/examples/headers/ -->
-  <div class="container">
-    <header class="d-flex justify-content-center py-3">
-      <ul class="nav nav-pills">
-        <li class="nav-item">
-          <a href="#" class="nav-link active" aria-current="page">Home (Week 4)</a>
-        </li>
-        <li class="nav-item"><a href="#" class="nav-link">About</a></li>
-        <li class="nav-item"><a href="#" class="nav-link">Contact us</a></li>
-      </ul>
-    </header>
-  </div>
+  <header class="d-flex justify-content-center py-3">
+    <ul class="nav nav-pills">
+      <li class="nav-item">
+        <router-link to="/" class="nav-link" active-class="active">Home</router-link>
+      </li>
+      <li v-if="authState.isAuthenticated" class="nav-item">
+        <router-link to="/about" class="nav-link" active-class="active">About</router-link>
+      </li>
+      <li v-if="!authState.isAuthenticated" class="nav-item">
+        <router-link to="/login" class="nav-link" active-class="active">Login</router-link>
+      </li>
+      <li class="nav-item">
+        <router-link to="/FireLogin" class="nav-link" active-class="active">Firebase Login</router-link>
+      </li>
+
+      <li class="nav-item">
+        <router-link to="/addbook" class="nav-link" active-class="active">Add Book</router-link>
+      </li>
+      <li v-if="authState.isAuthenticated" class="nav-item">
+        <button @click="handleLogout" class="btn btn-link nav-link">Logout</button>
+      </li>
+      <li class="nav-item">
+    <router-link to="/WeatherCheck" class="nav-link" active-class="active">Get Weather</router-link>
+  </li>
+  <li class="nav-item">
+    <router-link to="/CountBookAPI" class="nav-link" active-class="active">Count Book API</router-link>
+  </li>
+    </ul>
+  </header>
 </template>
 
+<script setup>
+import { useRouter } from 'vue-router'
+import { authState, authMethods } from '../store/auth' // 引入认证状态和方法
+
+const router = useRouter()
+
+const handleLogout = () => {
+  authMethods.logout()
+  router.push('/login') // 退出后跳转到登录页
+}
+</script>
+
 <style scoped>
-.b-example-divider {
-  height: 3rem;
-  background-color: rgba(0, 0, 0, 0.1);
-  border: solid rgba(0, 0, 0, 0.15);
-  border-width: 1px 0;
-  box-shadow:
-    inset 0 0.5em 1.5em rgba(0, 0, 0, 0.1),
-    inset 0 0.125em 0.5em rgba(0, 0, 0, 0.15);
-}
-
-.form-control-dark {
-  color: #fff;
-  background-color: var(--bs-dark);
-  border-color: var(--bs-gray);
-}
-.form-control-dark:focus {
-  color: #fff;
-  background-color: var(--bs-dark);
-  border-color: #fff;
-  box-shadow: 0 0 0 0.25rem rgba(255, 255, 255, 0.25);
-}
-
-.bi {
-  vertical-align: -0.125em;
-  fill: currentColor;
-}
-
-.text-small {
-  font-size: 85%;
-}
-
-.dropdown-toggle {
-  outline: 0;
+/* 让按钮看起来像链接 */
+.btn-link {
+  text-decoration: none;
 }
 </style>
